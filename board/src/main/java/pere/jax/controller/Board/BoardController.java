@@ -30,6 +30,7 @@ public class BoardController {
 		int total = service.getTotal(cri);
 		model.addAttribute("pageMaker",new pageDTO(cri,total));
 	}
+	//
 
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/register")

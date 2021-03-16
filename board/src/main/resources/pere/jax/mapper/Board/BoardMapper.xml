@@ -17,6 +17,8 @@
 			</foreach>
 		</trim>
 	</sql>
+	<!-- 검색조건 추가 -->
+
 	
 	<select id="getListWithPage" resultType="pere.jax.domain.BoardVO">
 		<![CDATA[
@@ -32,13 +34,11 @@
 			)
 		where rn > (#{pageNum}-1) * #{amount}
 		]]>
-	</select>
-	
-	<select id='getList' resultType='pere.jax.domain.BoardVO'>
-    <![CDATA[
-		select * from tbl_board where bno > 0 
-    ]]>
-	</select>
+	</select>	
+	<!-- 인덱스를 통한 힌트 사용 -->
+	<!-- rownum으로 인한 서브쿼리 사용 -->
+	<!-- 게시글 리스트 반환 -->
+
 
 	<insert id="insertSelectKey">
 		<selectKey keyProperty="bno" order="BEFORE" resultType="long">
@@ -47,23 +47,31 @@
 		insert into tbl_board (bno,title,content, writer)
 		values (#{bno},#{title}, #{content}, #{writer})
 	</insert>
+	<!-- 게시글 등록 시 bno는 입력하지 않기 때문에 selectkey 사용 -->
+	<!-- 게시글 등록 -->
+
 
 	<select id="read" resultType="pere.jax.domain.BoardVO">
 		select * from tbl_board where bno = #{bno}
 	</select>
-
+	<!-- 게시글 반환 -->
+	
+	
 	<delete id="delete">
 		delete tbl_board where bno = #{bno}
 	</delete>
+	<!-- 게시글 삭제 -->
+
 
 	<update id="update">
 		update tbl_board set 
 		title = #{title},
 		content = #{content},
-		writer = #{writer},
 		updateDate = sysdate
 		where bno = #{bno}
 	</update>
+	<!-- 게시글 수정 -->
+	
 	
 	<select id="getTotalCount" resultType="int">
 		<![CDATA[
@@ -75,10 +83,14 @@
 		bno > 0
 		]]>
 	</select>
+	<!-- 인덱스를 타기 위해 조건 bno > 0 -->
+	<!-- 전체 게시글 수 반환-->	
+	
 	
 	<update id='updateReplyCnt'>
 		update tbl_board set replycnt = replycnt + #{amount} where bno = #{bno}
 	</update>
+	<!-- 댓글 수 업데이트 -->
 	
 </mapper>
 	

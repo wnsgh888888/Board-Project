@@ -4,11 +4,14 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="pere.jax.mapper.Reply.ReplyMapper">
 	
+	
 	<insert id="insert">
 		insert into tbl_reply (rno, bno, reply, replyer)
 		values (seq_reply.nextval, #{bno}, #{reply}, #{replyer})
 	</insert>
-
+	
+	
+	
 	<select id="read" resultType="pere.jax.domain.ReplyVO">
 		select * from tbl_reply where rno = #{rno}
 	</select>

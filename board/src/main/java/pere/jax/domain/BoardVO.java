@@ -12,5 +12,5 @@ public class BoardVO {
 	private Date regdate;
 	private Date updateDate;
 	
-	private int replyCnt;
+	private int replyCnt;   //반정규화로 인한 칼럼 추가
 }
