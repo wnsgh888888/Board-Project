@@ -4,6 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="pere.jax.mapper.Board.BoardMapper">
 
+
 	<sql id='criteria'>
 		<trim prefix='(' suffix=') AND ' prefixOverrides='OR'>
 			<foreach item='type' collection='typeArr'>
@@ -17,8 +18,9 @@
 			</foreach>
 		</trim>
 	</sql>
-	<!-- 검색조건 추가 -->
-
+	<!-- OGNL 표현식을 통해 criteria 검색 -->
+	<!-- 검색이 존재할 경우 where 조건에 추가 -->
+	
 	
 	<select id="getListWithPage" resultType="pere.jax.domain.BoardVO">
 		<![CDATA[
@@ -34,12 +36,13 @@
 			)
 		where rn > (#{pageNum}-1) * #{amount}
 		]]>
-	</select>	
-	<!-- 인덱스를 통한 힌트 사용 -->
-	<!-- rownum으로 인한 서브쿼리 사용 -->
-	<!-- 게시글 리스트 반환 -->
-
-
+	</select>
+	<!-- resultType은 하나의 row를 지정 -->
+	<!-- 인덱스라는 힌트를 사용하여 조회 -->
+	<!-- rownum을 이용하기에 서브쿼리를 사용 -->
+	<!-- criteria에 맞는 게시글 리스트 반환 -->
+	
+	
 	<insert id="insertSelectKey">
 		<selectKey keyProperty="bno" order="BEFORE" resultType="long">
 			select seq_board.nextval from dual
@@ -47,7 +50,7 @@
 		insert into tbl_board (bno,title,content, writer)
 		values (#{bno},#{title}, #{content}, #{writer})
 	</insert>
-	<!-- 게시글 등록 시 bno는 입력하지 않기 때문에 selectkey 사용 -->
+	<!-- selectKey를 이용해 bno 값을 미리 구함-->
 	<!-- 게시글 등록 -->
 
 
@@ -55,8 +58,8 @@
 		select * from tbl_board where bno = #{bno}
 	</select>
 	<!-- 게시글 반환 -->
-	
-	
+
+
 	<delete id="delete">
 		delete tbl_board where bno = #{bno}
 	</delete>
@@ -67,11 +70,12 @@
 		update tbl_board set 
 		title = #{title},
 		content = #{content},
+		writer = #{writer},
 		updateDate = sysdate
 		where bno = #{bno}
 	</update>
 	<!-- 게시글 수정 -->
-	
+
 	
 	<select id="getTotalCount" resultType="int">
 		<![CDATA[
@@ -83,14 +87,14 @@
 		bno > 0
 		]]>
 	</select>
-	<!-- 인덱스를 타기 위해 조건 bno > 0 -->
-	<!-- 전체 게시글 수 반환-->	
+	<!-- criteria에 따른 게시글 총 갯수 반환 -->
 	
 	
 	<update id='updateReplyCnt'>
 		update tbl_board set replycnt = replycnt + #{amount} where bno = #{bno}
 	</update>
-	<!-- 댓글 수 업데이트 -->
+	<!-- 댓글 갯수 업데이트 --> 
+	
 	
 </mapper>
 	
