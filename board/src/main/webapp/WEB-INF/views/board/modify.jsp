@@ -39,23 +39,8 @@
 					</div>
 					
 					<div class="form-group">
-						<label>작성자</label> <input class="form-control" name='writer'
-							value='<c:out value="${board.writer}"/>' readonly="readonly">
+						<label>작성자</label> <input class="form-control" name='writer' value='<c:out value="${board.writer}"/>' readonly="readonly">
 					</div>					
-
-					<div class="form-group">
-						<label>등록 날짜</label> 
-						<input class="form-control" name='regdate'
-							value='<fmt:formatDate pattern = "yyyy/MM/dd" value = "${board.regdate}" />'
-							readonly="readonly">
-					</div>
-					
-					<div class="form-group">
-						<label>수정 날짜</label> 
-						<input class="form-control"name='updateDate'
-							value='<fmt:formatDate pattern = 'yyyy/MM/dd' value = '${board.updateDate}' />'
-							readonly="readonly">
-					</div>
 					
 					<input type='hidden' name='pageNum' value='<c:out value="${cri.pageNum }"/>'> 
 					<input type='hidden' name='amount' value='<c:out value="${cri.amount }"/>'>

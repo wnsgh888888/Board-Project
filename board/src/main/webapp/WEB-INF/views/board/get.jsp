@@ -12,58 +12,55 @@
 	</div>
 </div>
 
+
 <div class="row">
 	<div class="col-lg-12">
 		<div class="panel panel-default">
 
+
 			<div class="panel-heading">글 입력 폼</div>
-
-
 			<div class="panel-body">
 				<div class='form-group'>
-					<label>번호</label> <input class='form-control' name='bno'
-						value='<c:out value="${board.bno}"/>' readonly='readonly'>
+					<label>번호</label> 
+					<input class='form-control' name='bno' value='${board.bno}' readonly='readonly'>
 				</div>
 
 				<div class='form-group'>
-					<label>제목</label> <input class='form-control' name='title'
-						value='<c:out value="${board.title}"/>' readonly='readonly'>
+					<label>제목</label> 
+					<input class='form-control' name='title' value='${board.title}' readonly='readonly'>
 				</div>
 
 				<div class='form-group'>
 					<label>내용</label>
-					<textarea class='form-control' rows='3' name='content'
-						readonly='readonly'><c:out value="${board.content}" /></textarea>
+					<textarea class='form-control' rows='3' name='content' readonly='readonly'>${board.content}</textarea>
 				</div>
 
 				<div class='form-group'>
-					<label>작성자</label> <input class='form-control' name='writer'
-						value='<c:out value="${board.writer}"/>' readonly='readonly'>
+					<label>작성자</label>
+					<input class='form-control' name='writer' value='${board.writer}' readonly='readonly'>
 				</div>
+				
 				<sec:authentication property="principal" var="pinfo"/>
 				<sec:authorize access="isAuthenticated()">
 				<c:if test="${pinfo.username eq board.writer}">
-					<button data-oper='modify' class='btn btn-default'>수정</button>
+					<button type='button' data-oper='modify' class='btn btn-default'>수정</button>
 				</c:if>
 				</sec:authorize>
 				
-				<button data-oper='list' class='btn btn-default'>리스트</button>
+				<button type='button' data-oper='list' class='btn btn-default'>리스트</button>
 
 				<form id='operForm' action='/board/modify' method='get'>
-					<input type='hidden' id='bno' name='bno'
-						value='<c:out value="${board.bno}"/>'> <input
-						type='hidden' name='pageNum'
-						value='<c:out value="${cri.pageNum }"/>'> <input
-						type='hidden' name='amount'
-						value='<c:out value="${cri.amount }"/>'> <input
-						type='hidden' name='keyword'
-						value='<c:out value="${cri.keyword }"/>'> <input
-						type='hidden' name='type' value='<c:out value="${cri.type }"/>'>
+					<input type='hidden' id='bno' name='bno' value='${board.bno}'> 
+					<input type='hidden' name='pageNum' value='${cri.pageNum }'> 
+					<input type='hidden' name='amount' value='${cri.amount }'> 
+					<input type='hidden' name='keyword' value='${cri.keyword }'>
+					<input type='hidden' name='type' value='${cri.type }"/>'>
 				</form>				
-			</div><!-- body end -->
-		</div><!-- panel end -->
+			</div>
+			
+		</div>
 	</div>
-</div>
+</div><!-- 게시글 -->
 
 
 <div class='row'>
@@ -85,7 +82,7 @@
 
 		</div>
 	</div>
-</div>
+</div><!-- 댓글 -->
 
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
@@ -122,31 +119,33 @@
 			</div>
 		</div>
 	</div>
-</div><!-- modal end -->
+</div><!-- 모달창 -->
 
 
 <script type="text/javascript" src="/resources/js/reply.js"></script>
 <script>
 	$(document).ready(function (){
 		
-		var bnoValue = '<c:out value="${board.bno}"/>';
-		var replyUL = $(".chat");
+		var bnoValue = '<c:out value="${board.bno}"/>'; 
+		var replyUL = $(".chat");   //댓글 태그
 		
 		showList(1);
 		
 		function showList(page){
 			
-			replyService.getList({bno : bnoValue, page : page || 1},function(replyCnt, list){
+			replyService.getList({bno : bnoValue, page : page || 1}, function(replyCnt, list){
 				
 				if(page == -1){
 					pageNum = Math.ceil(replyCnt/10.0);
 					showList(pageNum);
 					return;
 				}
+				//마지막 페이지로 이동
 				
 				if(list == null || list.length == 0){
 					return;
 				}
+				//댓글이 없는 경우 함수 종료
 				
 				var str = "";
 				
@@ -158,13 +157,13 @@
 					str += "<p>" + list[i].reply + "</p></div></li>";
 				}
 				
-				replyUL.html(str);
-				showReplyPage(replyCnt);
+				replyUL.html(str);   //댓글 추가
+				showReplyPage(replyCnt);   //페이징
 			});
 		}//end function
 		
-		var pageNum = 1;
-		var replyPageFooter = $(".panel-footer");
+		var pageNum = 1;   		
+		var replyPageFooter = $(".panel-footer");   //페이지 태그
 		
 		function showReplyPage(replyCnt){
 			
@@ -194,7 +193,7 @@
 			
 			str += "</ul></div>";			
 			replyPageFooter.html(str);
-		}//end function
+		}
 		
 		
 		replyPageFooter.on("click", "li a", function(e){
@@ -203,6 +202,8 @@
 			pageNum = targetPageNum;
 			showList(pageNum);
 		});
+		// 페이지 아이콘을 누르면 숫자가 pageNum에 저장 (이벤트 위임)
+		// 그 후 페이지에 맞는 댓글 리스트 재요청
 		
 		
 	    var modal = $(".modal");
@@ -226,32 +227,28 @@
 	    $(document).ajaxSend(function(e, xhr, options) { 
 	        xhr.setRequestHeader(csrfHeaderName, csrfTokenValue); 
 	    });
-	    
-	    
-	    $("#modalCloseBtn").on("click", function(e){
-	    	modal.modal('hide');
-	    });
-	    
+	        
 	    
 	    $("#addReplyBtn").on("click", function(e){
 	    	modal.find("input").val("");
 	    	modal.find("input[name = 'replyer']").val(replyer);
 	    	modal.find("input[name = 'replyer']").attr("readonly","readonly");
-
 	    	modalInputReplyDate.closest("div").hide();
+	    	
 	    	modal.find("button[id != 'modalCloseBtn']").hide();
 	    	modalRegisterBtn.show();
 	    	
-	    	$(".modal").modal("show");
+	    	$(".modal").modal("show"); 
 	    });
+	    // 새 댓글 버튼을 눌렀을 때
 	    
 	    	
-	    modalRegisterBtn.on("click",function(e){
+	    modalRegisterBtn.on("click", function(e){
 	    		
 	    	var reply = {
-	    		reply : modalInputReply.val(),
-	    		replyer : modalInputReplyer.val(),
-	    		bno : bnoValue	//mapper.insert 검색 시 bno가 필요
+	    			bno : bnoValue	// mapper.insert 검색 시 bno가 필요
+	    			reply : modalInputReply.val(),
+	    			replyer : modalInputReplyer.val(),
 	   		};
 	    		
 	   		replyService.add(reply, function(result){
@@ -261,6 +258,13 @@
 	    		showList(-1);
 	    	});
 	    });
+	    // 등록 버튼을 눌렀을 때
+	    
+	    
+	    $("#modalCloseBtn").on("click", function(e){
+	    	modal.modal('hide');
+	    });
+	    // 닫기 버튼을 눌렀을 때	
 	    
 	    
 	    $(".chat").on("click", "li", function(e){
@@ -272,7 +276,6 @@
 	    		modalInputReply.val(reply.reply);
 	        	modalInputReplyer.val(reply.replyer);	
 	      		modalInputReplyDate.val(replyService.displayTime(reply.replyDate)).attr("readonly", "readonly");
-	    		modal.data("rno", reply.rno);
 	    		        
 	    		modal.find("button[id != 'modalCloseBtn']").hide();
 	    		modalModBtn.show();
@@ -281,6 +284,7 @@
 	    		$(".modal").modal("show");
 	    	});
 	    });
+	    // 댓글 클릭 시 (이벤트 위임)
 	    
 	    
 	    modalModBtn.on("click", function(e){
@@ -308,6 +312,7 @@
 	    		showList(pageNum);
 	    	});
 	    });
+	    //댓글 수정 클릭 시
 	    
 	    
 	    modalRemoveBtn.on("click", function(e){
@@ -333,12 +338,16 @@
 	    		modal.modal("hide");
 	    		showList(pageNum);
 	    	});
-	    });//event end
+	    });
+	    //댓글 삭제 클릭 시
+	    
+	    
 	});
 </script>
 
 <script>
 	$(document).ready(function() {
+		
 		var operForm = $("#operForm");
 
 		$("button[data-oper='modify']").on("click", function(e) {
@@ -351,6 +360,9 @@
 			operForm.submit();
 		});
 	});
+	//수정 버튼 클릭 시 bno,criteria을 전송
+	//리스트 버튼 클릭 시 criteria만을 전송
+	
 </script>
 
 <%@include file="../includes/footer.jsp"%>

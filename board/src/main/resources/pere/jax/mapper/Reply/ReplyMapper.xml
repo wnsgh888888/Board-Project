@@ -4,23 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="pere.jax.mapper.Reply.ReplyMapper">
 	
-	<insert id="insert">
-		insert into tbl_reply (rno, bno, reply, replyer)
-		values (seq_reply.nextval, #{bno}, #{reply}, #{replyer})
-	</insert>
 
-	<select id="read" resultType="pere.jax.domain.ReplyVO">
-		select * from tbl_reply where rno = #{rno}
-	</select>
-
-	<delete id="delete">
-		delete from tbl_reply where rno = #{rno}
-	</delete>
-
-	<update id="update">
-		update tbl_reply set reply = #{reply}, updatedate = sysdate where rno = #{rno}
-	</update>
-	
 	<select id="getListWithPaging" resultType="pere.jax.domain.ReplyVO">
 		<![CDATA[
 		select rno, bno, reply, replyer, replyDate, updateDate from
@@ -34,10 +18,42 @@
 		where rn > (#{cri.pageNum} - 1) * #{cri.amount}
 		]]>
 	</select>
+	<!-- 여기서 사용하는 cri는 게시판이 아닌 댓글 기준 -->
+	<!-- bno가 같은 경우를 조건으로 추가 -->
+	<!-- Index Ranged Scan을 하기 위한 rno > 0  -->
 	
+	
+	<insert id="insert">
+		insert into tbl_reply (rno, bno, reply, replyer)
+		values (seq_reply.nextval, #{bno}, #{reply}, #{replyer})
+	</insert>	
+	<!-- 나머지 칼럼들은 시스템에서 추가 -->
+	<!-- 덧글 작성 -->
+	
+	
+	<select id="read" resultType="pere.jax.domain.ReplyVO">
+		select * from tbl_reply where rno = #{rno}
+	</select>
+	<!-- 댓글 조회 -->
+
+
+	<delete id="delete">
+		delete from tbl_reply where rno = #{rno}
+	</delete>
+	<!-- 댓글 삭제 -->
+	
+	
+	<update id="update">
+		update tbl_reply set reply = #{reply}, updatedate = sysdate where rno = #{rno}
+	</update>
+	<!-- 댓글 업데이트 -->
+
 	<select id="getCountByBno" resultType="int">
 		<![CDATA[
 		select count(rno) from tbl_reply where bno = #{bno}
 		]]>
 	</select>
+	<!-- 게시글 당 댓글 갯수 반환 -->
+	<!-- 페이징을 위해 -->
+	
 </mapper>

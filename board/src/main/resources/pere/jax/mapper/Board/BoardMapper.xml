@@ -41,7 +41,7 @@
 	<!-- 인덱스라는 힌트를 사용하여 조회 -->
 	<!-- rownum을 이용하기에 서브쿼리를 사용 -->
 	<!-- criteria에 맞는 게시글 리스트 반환 -->
-	
+	<!-- Range Scan으로 변경해볼 것 -->
 	
 	<insert id="insertSelectKey">
 		<selectKey keyProperty="bno" order="BEFORE" resultType="long">
@@ -51,6 +51,7 @@
 		values (#{bno},#{title}, #{content}, #{writer})
 	</insert>
 	<!-- selectKey를 이용해 bno 값을 미리 구함-->
+	<!-- 이때 regDate,updateDate 값 시스템에서 할당 -->
 	<!-- 게시글 등록 -->
 
 

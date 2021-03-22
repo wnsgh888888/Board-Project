@@ -49,28 +49,27 @@
 				</table><!-- 테이블 -->
 				
 				
-				<div class="row">
-					<div class="col-lg-12">
-						<form id='searchForm' action='/board/list' method='get'>
-							<select name='type'>
-								<option value='' ${criteria.type == null ? 'selected' : ''} >--</option>
-								<option value='T' ${criteria.type eq 'T' ? 'selected' : ''} >제목</option>
-								<option value='C' ${criteria.type eq 'C' ? 'selected' : ''} >내용</option>
-								<option value='W' ${criteria.type eq 'W' ? 'selected' : ''} >작성자</option>
-								<option value='TC' ${criteria.type eq 'TC' ? 'selected' : ''} >제목+내용</option>
-								<option value='TW' ${criteria.type eq 'TW' ? 'selected' : ''} >제목+작성자</option>
-								<option value='TWC' ${criteria.type eq 'TWC' ? 'selected' : ''} >제목+내용+작성자</option>
-							</select>
+	
+				<form id='searchForm' action='/board/list' method='get'>
+					<select name='type'>
+						<option value='' ${criteria.type == null ? 'selected' : ''} >--</option>
+						<option value='T' ${criteria.type eq 'T' ? 'selected' : ''} >제목</option>
+						<option value='C' ${criteria.type eq 'C' ? 'selected' : ''} >내용</option>
+						<option value='W' ${criteria.type eq 'W' ? 'selected' : ''} >작성자</option>
+						<option value='TC' ${criteria.type eq 'TC' ? 'selected' : ''} >제목+내용</option>
+						<option value='TW' ${criteria.type eq 'TW' ? 'selected' : ''} >제목+작성자</option>
+						<option value='TWC' ${criteria.type eq 'TWC' ? 'selected' : ''} >제목+내용+작성자</option>
+					</select>
 							
-							<input type='text' name='keyword' value='${criteria.keyword}'/>
-							<input type='hidden' name='pageNum' value='<c:out value="${criteria.pageNum}"/>'/>
-							<input type='hidden' name='amount' value='<c:out value="${criteria.amount}"/>'/>
-							<button class='btn btn-default'>검색</button>
-						</form>
-					</div>
-				</div><!-- 검색창 -->
+					<input type='text' name='keyword' value='${criteria.keyword}'/>
+					<input type='hidden' name='pageNum' value='<c:out value="${criteria.pageNum}"/>'/>
+					<input type='hidden' name='amount' value='<c:out value="${criteria.amount}"/>'/>
+					<button class='btn btn-default'>검색</button>
+				</form>
+
 				<!-- 키워드를 입력해야하기 때문에 form태그를 따로 만듬 -->
 				<!-- 공통폼과 같은 criteria를 받음 -->
+				<!-- 폼 태그 안 버튼은 type이 submit -->
 				
 				<div class='pull-right'>
 					<ul class="pagination">
@@ -116,7 +115,7 @@
 					<input type='hidden' name='amount' value='${criteria.amount}'>
 					<input type='hidden' name='type' value='${criteria.type}'>
 					<input type='hidden' name='keyword' value='${criteria.keyword}'>
-				</form><!-- 공통 폼태그 -->
+				</form><!-- 전송 데이터 -->
 			
 										
 			</div><!-- 리스트 페이지 -->	
@@ -144,8 +143,9 @@
 		$("#regBtn").on("click",function(){
 				self.location = "/board/register";
 		});	
-		//새 글 등록 요청
-		
+		//전달해야할 값이 없으니 self.location 이용
+		//새 글 등록
+	
 		
 		var actionForm = $("#actionForm");
 

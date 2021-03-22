@@ -26,6 +26,20 @@ import pere.jax.service.Reply.ReplyService;
 public class ReplyController {
 	
 	private ReplyService service;
+	// 서비스 인터페이스 추가
+	
+	
+	@GetMapping(value = "/pages/{bno}/{page}", 
+			produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE})
+	public ResponseEntity<ReplyPageDTO> getList(@PathVariable("page") int page, @PathVariable("bno") Long bno){
+		Criteria cri = new Criteria(page, 10);
+		return new ResponseEntity<>(service.getListPage(cri,bno), HttpStatus.OK);
+	}
+	// ajax 통신에 의한 댓글 리스트 페이지 반환
+	// bno와 page를 주소자원으로 받음
+	// consumes x, produces json/xml
+	// criteria 객체를 만들어 amount 값을 주고 서비스에 넣어 리스트 페이지 반환
+	
 	
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping(value = "/new", consumes = "application/json", produces = {MediaType.TEXT_PLAIN_VALUE})
@@ -34,6 +48,10 @@ public class ReplyController {
 		return insertCount == 1 ? new ResponseEntity<>("success",HttpStatus.OK) 
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	// ajax 통신에 의한 댓글 추가
+	// 매개변수로 댓글 데이터를 받음
+	// consumes json/xml, produces text
+	// 서비스 값에 따른 성공 / 에러
 	
 	
 	@GetMapping(value = "/{rno}", 
@@ -41,6 +59,11 @@ public class ReplyController {
 	public ResponseEntity<ReplyVO> get(@PathVariable("rno") Long rno){
 		return new ResponseEntity<>(service.get(rno), HttpStatus.OK);
 	}
+	// ajax 통신에 의한 댓글 조회
+	// 따라서 주소자원 rno를 매개변수로 받음
+	// consumes는 x produces는 xml/jsno
+	// 서비스를 통해 댓글 반환
+	
 	
 	@PreAuthorize("principal.username == #vo.replyer")
 	@RequestMapping(method = {RequestMethod.PUT, RequestMethod.PATCH}, 
@@ -50,6 +73,11 @@ public class ReplyController {
 		return service.modify(vo) == 1 ? new ResponseEntity<>("success", HttpStatus.OK) 
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	// ajax 통신에 의한 댓글 수정
+	// 주소자원으로 rno를 받고 데이터로 ReplyVo를 받음
+	// consumes는 json/xml produces는 text
+	// 서비스 결과값에 따라 성공/에러 보냄
+	
 	
 	@PreAuthorize("principal.username == #vo.replyer")
 	@DeleteMapping(value = "/{rno}", produces = {MediaType.TEXT_PLAIN_VALUE})
@@ -57,12 +85,8 @@ public class ReplyController {
 		return service.remove(rno) == 1 ? new ResponseEntity<>("success", HttpStatus.OK) 
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
-	
-	@GetMapping(value = "/pages/{bno}/{page}", 
-			produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE})
-	public ResponseEntity<ReplyPageDTO> getList(@PathVariable("page") int page, @PathVariable("bno") Long bno){
-		Criteria cri = new Criteria(page, 10);
-		return new ResponseEntity<>(service.getListPage(cri,bno), HttpStatus.OK);
-	}
+	// ajax 통신에 의한 댓글 삭제
+	// 주소자원으로 rno를 매개변수로 받음
+	// consumes x, produces text
+	// 서비스 결과값에 따라 성공 / 에러
 }
