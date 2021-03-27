@@ -1,101 +1,90 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 
 <%@include file="../includes/header.jsp"%>
 
-<div class="row">
-	<div class="col-lg-12">
-		<h1 class="page-header">해당 글 조회</h1>
+<div class="card shadow mb-4">
+
+	<div class="card-header py-3">
+		<h3 class="m-1 text-dark">해당 글 조회</h3>
 	</div>
+	<!-- 헤드라인 -->
+
+
+	<div class="card-body">
+		<div class='form-group'>
+			<label>번호</label>
+			<input class='form-control' name='bno' value='${board.bno}' readonly='readonly'>
+		</div>
+
+		<div class='form-group'>
+			<label>제목</label>
+			<input class='form-control' name='title' value='${board.title}' readonly='readonly'>
+		</div>
+
+		<div class='form-group'>
+			<label>내용</label>
+			<textarea class='form-control' rows='3' name='content' readonly='readonly'>${board.content}</textarea>
+		</div>
+
+		<div class='form-group'>
+			<label>작성자</label>
+			<input class='form-control' name='writer' value='${board.writer}' readonly='readonly'>
+		</div>
+
+		<sec:authentication property="principal" var="pinfo" />
+		<sec:authorize access="isAuthenticated()">
+			<c:if test="${pinfo.username eq board.writer}">
+				<button type='button' data-oper='modify' class="btn btn-success">수정</button>
+			</c:if>
+		</sec:authorize>
+
+		<button type='button' data-oper='list' class="btn btn-primary">리스트</button>
+
+		<form id='operForm' action='/board/modify' method='get'>
+			<input type='hidden' id='bno' name='bno' value='${board.bno}'>
+			<input type='hidden' name='pageNum' value='${cri.pageNum }'>
+			<input type='hidden' name='amount' value='${cri.amount }'>
+			<input type='hidden' name='keyword' value='${cri.keyword }'>
+			<input type='hidden' name='type' value='${cri.type }"/>'>
+		</form>
+	</div>
+	<!-- 테이블 바디-->
 </div>
+<!-- 게시글 -->
 
 
-<div class="row">
-	<div class="col-lg-12">
-		<div class="panel panel-default">
+<div class="card shadow mb-4">
 
-
-			<div class="panel-heading">글 입력 폼</div>
-			<div class="panel-body">
-				<div class='form-group'>
-					<label>번호</label> 
-					<input class='form-control' name='bno' value='${board.bno}' readonly='readonly'>
-				</div>
-
-				<div class='form-group'>
-					<label>제목</label> 
-					<input class='form-control' name='title' value='${board.title}' readonly='readonly'>
-				</div>
-
-				<div class='form-group'>
-					<label>내용</label>
-					<textarea class='form-control' rows='3' name='content' readonly='readonly'>${board.content}</textarea>
-				</div>
-
-				<div class='form-group'>
-					<label>작성자</label>
-					<input class='form-control' name='writer' value='${board.writer}' readonly='readonly'>
-				</div>
-				
-				<sec:authentication property="principal" var="pinfo"/>
-				<sec:authorize access="isAuthenticated()">
-				<c:if test="${pinfo.username eq board.writer}">
-					<button type='button' data-oper='modify' class='btn btn-default'>수정</button>
-				</c:if>
-				</sec:authorize>
-				
-				<button type='button' data-oper='list' class='btn btn-default'>리스트</button>
-
-				<form id='operForm' action='/board/modify' method='get'>
-					<input type='hidden' id='bno' name='bno' value='${board.bno}'> 
-					<input type='hidden' name='pageNum' value='${cri.pageNum }'> 
-					<input type='hidden' name='amount' value='${cri.amount }'> 
-					<input type='hidden' name='keyword' value='${cri.keyword }'>
-					<input type='hidden' name='type' value='${cri.type }"/>'>
-				</form>				
-			</div>
-			
-		</div>
+	<div class="card-header py-3">
+		<i class='fa fa-comments fa-fw'></i> 댓글
+		<sec:authorize access="isAuthenticated()">
+			<button id='addReplyBtn' class='btn btn btn-secondary btn-xs pull-right'>새 댓글 작성</button>
+		</sec:authorize>
 	</div>
-</div><!-- 게시글 -->
 
-
-<div class='row'>
-	<div class='col-lg-12'>
-		<div class='panel panel-default'>
-
-			<div class='panel-heading'>
-				<i class='fa fa-comments fa-fw'></i> 댓글
-				<sec:authorize access="isAuthenticated()">
-				<button id='addReplyBtn' class='btn btn-primary btn-xs pull-right'>새 댓글 작성</button>
-				</sec:authorize>
-			</div>
-
-			<div class='panel-body'>
-				<ul class='chat'></ul>
-			</div>
-
-			<div class='panel-footer'></div>
-
-		</div>
+	<div class="card-body">
+		<ul class='chat'></ul>
 	</div>
-</div><!-- 댓글 -->
+
+	<div class='card-footer'></div>
+</div>
+<!-- 댓글 -->
 
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-	aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal" id="myModal">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			
+
+			<!-- Modal Header -->
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="myModalLabel">댓글 작성하기</h4>
+				<h4 class="modal-title">댓글 작성하기</h4>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
 			</div>
-			
+
+			<!-- Modal body -->
 			<div class="modal-body">
 				<div class='form-group'>
 					<label>댓글</label>
@@ -110,19 +99,24 @@
 					<input class='form-control' name='replyDate' value='2020-01-14 14:23'>
 				</div>
 			</div>
-			
+
+			<!-- Modal footer -->
 			<div class="modal-footer">
 				<button id='modalModBtn' type="button" class="btn btn-warning">수정</button>
-        		<button id='modalRemoveBtn' type="button" class="btn btn-danger">삭제</button>
-        		<button id='modalRegisterBtn' type="button" class="btn btn-primary">등록</button>
-        		<button id='modalCloseBtn' type="button" class="btn btn-default">닫기</button>
+				<button id='modalRemoveBtn' type="button" class="btn btn-danger">삭제</button>
+				<button id='modalRegisterBtn' type="button" class="btn btn-primary">등록</button>
+				<button id='modalCloseBtn' type="button" class="btn btn-default">닫기</button>
 			</div>
 		</div>
 	</div>
-</div><!-- 모달창 -->
+</div>
+<!-- 모달창 -->
 
 
-<script type="text/javascript" src="/resources/js/reply.js"></script>
+<script type="text/javascript" src="../resources/js/reply.js"></script>
+<!-- reply ajax funtion-->
+<!-- 통신하여 값을 비동기적으로 얻어내는 -->
+
 <script>
 	$(document).ready(function (){
 		
@@ -150,7 +144,7 @@
 				var str = "";
 				
 				for(var i = 0; i < list.length; i++){
-					str += "<li class='left clearfix' data-rno='" + list[i].rno + "'>";
+					str += "<li class='' data-rno='" + list[i].rno + "'>";
 					str += "<div><div class='header'>";
 					str += "<strong class='primary-font'>[" + list[i].rno + "]" + list[i].replyer + "</strong>";
  					str += "<small class='pull-right text-muted'>" + replyService.displayTime(list[i].replyDate) + "</small></div>" 
@@ -163,7 +157,7 @@
 		}//end function
 		
 		var pageNum = 1;   		
-		var replyPageFooter = $(".panel-footer");   //페이지 태그
+		var replyPageFooter = $(".card-footer");   //페이지 태그
 		
 		function showReplyPage(replyCnt){
 			
@@ -203,7 +197,6 @@
 			showList(pageNum);
 		});
 		// 페이지 아이콘을 누르면 숫자가 pageNum에 저장 (이벤트 위임)
-		// 그 후 페이지에 맞는 댓글 리스트 재요청
 		
 		
 	    var modal = $(".modal");
@@ -246,7 +239,7 @@
 	    modalRegisterBtn.on("click", function(e){
 	    		
 	    	var reply = {
-	    			bno : bnoValue	// mapper.insert 검색 시 bno가 필요
+	    			bno : bnoValue,	// mapper.insert 검색 시 bno가 필요
 	    			reply : modalInputReply.val(),
 	    			replyer : modalInputReplyer.val(),
 	   		};
@@ -345,9 +338,9 @@
 	});
 </script>
 
+
 <script>
-	$(document).ready(function() {
-		
+	$(document).ready(function() {	
 		var operForm = $("#operForm");
 
 		$("button[data-oper='modify']").on("click", function(e) {
