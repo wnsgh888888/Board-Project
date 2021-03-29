@@ -8,7 +8,7 @@
 
 	<div class="card-header py-3">
 		<h3 class="m-1 text-dark">
-			공지사항
+			커뮤니티
 			<button type="button" id='regBtn' class="btn btn-primary float-right">새 글 등록</button>
 		</h3>
 	</div>
@@ -32,7 +32,9 @@
 						<tr>
 							<td>${board.bno}</td>
 							<td>
-								<a class='move' href='${board.bno}'> ${board.title} [${board.replyCnt}] </a>
+								<a class='move' href='${board.bno}'>
+									${board.title} <span class="badge badge-primary badge-pill">${board.replyCnt}</span>
+								</a>
 							</td>
 							<td>${board.writer}</td>
 							<td>
@@ -82,12 +84,12 @@
 				</c:if>
 
 				<c:forEach var='num' begin='${pageMaker.startPage}' end='${pageMaker.endPage}'>
-					<li class='paginate_button page-item previous ${criteria.pageNum == num ? "active" : "" }' id="dataTable_previous"><a aria-controls="dataTable" data-dt-idx="0"
-							tabindex="0" class="page-link" href='${num}'>${num}</a></li>
+					<li class='paginate_button page-item  ${criteria.pageNum == num ? "active" : "" }' id="dataTable_previous"><a aria-controls="dataTable" data-dt-idx="0" tabindex="0"
+							class="page-link" href='${num}'>${num}</a></li>
 				</c:forEach>
 
 				<c:if test='${pageMaker.next}'>
-					<li class="paginate_button page-item previous" id="dataTable_previous"><a aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link"
+					<li class="paginate_button page-item next" id="dataTable_previous"><a aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link"
 							href='${pageMaker.endPage + 1}'>다음</a></li>
 				</c:if>
 			</ul>
@@ -152,8 +154,8 @@
 		//전달해야할 값이 없으니 self.location 이용
 		//새 글 등록
 
- 		var actionForm = $("#actionForm");
- 
+		var actionForm = $("#actionForm");
+
 		$(".move").on("click", function(e) {
 			e.preventDefault();
 			actionForm.append("<input type='hidden' name='bno' value='" + $(this).attr("href") + "'>");

@@ -13,7 +13,7 @@
 		<security:access-denied-handler ref="customAccessDenided"/>
 		<security:form-login login-page="/customLogin"/>
 		<security:remember-me data-source-ref="dataSource" token-validity-seconds="604800" />
-		<security:logout logout-url="/customLogout"	invalidate-session="true" delete-cookies="remember-me,JSESSION_ID" />		
+		<security:logout logout-url="/includes/header"	invalidate-session="true" delete-cookies="remember-me,JSESSION_ID" />		
 	</security:http>
 	
 	<security:authentication-manager>

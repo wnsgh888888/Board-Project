@@ -36,17 +36,17 @@ public class CommonController {
 			model.addAttribute("logout", "로그아웃");
 	}
 		
-	@GetMapping("/customLogout")
+	@GetMapping("/includes/header")
 	public void logoutGET() {}
 	
-	@PostMapping("/customLogout")
-	public void logoutPost() {}
+	@PostMapping("/includes/header")
+	public void logoutPOST() {}
 	
-	@GetMapping("/join")
+	@GetMapping("/register")
 	public void registerGET() {}
 	
-	@PostMapping("/join")
-	public String register(MemberVO vo, RedirectAttributes rttr) {
+	@PostMapping("/register")
+	public String registerPOST(MemberVO vo, RedirectAttributes rttr) {
 		
 		int result = service.register(vo);
 		
