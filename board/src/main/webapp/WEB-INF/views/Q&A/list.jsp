@@ -8,7 +8,7 @@
 
 	<div class="card-header py-3">
 		<h3 class="m-1 text-dark">
-			공지사항
+			Q&A
 			<button type="button" id='regBtn' class="btn btn-primary float-right">새 글 등록</button>
 		</h3>
 	</div>
@@ -53,7 +53,7 @@
 
 		<div class="row-vw d-flex">
 
-			<form id='searchForm' action='/board2/list' method='get' class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search mr-auto">
+			<form id='searchForm' action='/Q&A/list' method='get' class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search mr-auto">
 				<div class="input-group">
 					<select class="form-control bg-light border-0 small" name='type'>
 						<option value='' ${criteria.type == null ? 'selected' : ''}>--</option>
@@ -120,7 +120,7 @@
 		</div>
 		<!-- 모달창 -->
 
-		<form id='actionForm' action="/board2/list" method='get'>
+		<form id='actionForm' action="/Q&A/list" method='get'>
 			<input type='hidden' name='pageNum' value='${criteria.pageNum}'>
 			<input type='hidden' name='amount' value='${criteria.amount}'>
 			<input type='hidden' name='type' value='${criteria.type}'>
@@ -149,7 +149,7 @@
 		//게시글 등록 시 모달창 발생
 
 		$("#regBtn").on("click", function() {
-			self.location = "/board2/register";
+			self.location = "/Q&A/register";
 		});
 		//전달해야할 값이 없으니 self.location 이용
 		//새 글 등록
@@ -159,7 +159,7 @@
 		$(".move").on("click", function(e) {
 			e.preventDefault();
 			actionForm.append("<input type='hidden' name='bno' value='" + $(this).attr("href") + "'>");
-			actionForm.attr("action", "/board2/get");
+			actionForm.attr("action", "/Q&A/get");
 			actionForm.submit();
 		});
 		//게시글 제목을 누르면 게시글 번호를 추출

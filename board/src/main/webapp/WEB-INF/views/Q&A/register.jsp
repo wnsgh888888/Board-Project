@@ -16,7 +16,7 @@
 
 	<div class="card-body">
 
-		<form role='form' action='/board3/register' method='post'>
+		<form role='form' action='/Q&A/register' method='post'>
 			<div class='form-group'>
 				<label class="font-weight-bold">제목</label>
 				<input class='form-control' name='title'>
@@ -45,7 +45,7 @@
 <script>
 	$(document).ready(function() {
 		$("#listBtn").on("click", function() {
-			self.location = "/board3/list";
+			self.location = "/Q&A/list";
 		});
 	});
 	//리스트 버튼 클릭 시 criteria만을 전송

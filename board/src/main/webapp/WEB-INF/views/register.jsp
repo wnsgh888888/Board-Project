@@ -19,7 +19,7 @@
 						<div class="text-center">
 							<h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
 						</div>
-						<form class="user">
+						<form role="form" class='user' method='post' action="/register">
 							
 							<div class="form-group">
 								<input class="form-control" name="userName" type="text" placeholder="이름" autofocus>
@@ -34,7 +34,7 @@
 							</div>
 							<hr>
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-							<a href="login.html" class="btn btn-primary btn-user btn-block"> 등록 </a>
+							<a href="login.html" class="btn btn-primary btn-user btn-block btn-register"> 등록 </a>
 						</form>
 						<c:forEach var='num' begin='0' end='4'>
 									<br>
@@ -64,7 +64,7 @@
 
 
 <script type="text/javascript">
-	$(".btn-success").on("click", function(e) {
+	$(".btn-register").on("click", function(e) {
 		e.preventDefault();
 		$("form").submit();
 	});

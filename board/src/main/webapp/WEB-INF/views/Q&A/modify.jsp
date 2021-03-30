@@ -14,7 +14,7 @@
 
 
 	<div class="card-body">
-		<form role='form' action='/board3/modify' method='post'>
+		<form role='form' action='/Q&A/modify' method='post'>
 
 
 			<div class='form-group'>
@@ -68,7 +68,7 @@
 		$("button[data-oper='list']").on("click", function(e) {
 			e.preventDefault();
 
-			formObj.attr("action", "/board3/list").attr("method", "get");
+			formObj.attr("action", "/Q&A/list").attr("method", "get");
 
 			var pageNumTag = $("input[name='pageNum']").clone();
 			var amountTag = $("input[name='amount']").clone();

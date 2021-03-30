@@ -51,7 +51,7 @@
 		</sec:authorize>
 
 
-		<form id='operForm' action='/board3/modify' method='get'>
+		<form id='operForm' action='/Q&A/modify' method='get'>
 			<input type='hidden' id='bno' name='bno' value='${board.bno}'>
 			<input type='hidden' id='writer' name='writer' value='${board.writer}'>
 			<input type='hidden' name='pageNum' value='${cri.pageNum }'>
@@ -337,20 +337,20 @@
 		$("button[data-oper='modify']").on("click", function(e) {
 			operForm.find("#crsf").remove();
 			operForm.find("#writer").remove();
-			operForm.attr("action", "/board3/modify").submit();
+			operForm.attr("action", "/Q&A/modify").submit();
 		});
 
 		$("button[data-oper='list']").on("click", function(e) {
 			operForm.find("#bno").remove();
 			operForm.find("#writer").remove();
 			operForm.find("#crsf").remove();
-			operForm.attr("action", "/board3/list");
+			operForm.attr("action", "/Q&A/list");
 			operForm.submit();
 		});
 		
  		$("button[data-oper='remove']").on("click", function(e) {
 			operForm.attr("method", "post");
-			operForm.attr("action", "/board3/remove");
+			operForm.attr("action", "/Q&A/remove");
 			operForm.submit();
 		});
 		 

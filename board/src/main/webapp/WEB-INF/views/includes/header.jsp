@@ -48,37 +48,37 @@
 
 			<sec:authorize access="isAnonymous()">
 				<!-- Nav Item - Pages Collapse Menu -->
-				<li class="nav-item" id = "oo"><a class="nav-link" href="/customLogin">
+				<li class="nav-item" id="goCustomLogin" ><a class="nav-link" href="/customLogin">
 						<i class="fa fa-share" aria-hidden="true"></i> <span>로그인</span>
 					</a></li>
 			</sec:authorize>
 
 			<sec:authorize access="isAuthenticated()">
-				<li class="nav-item"><a class="nav-link logoutBtn" href="#" onclick="document.getElementById('logout').submit();">
+				<li class="nav-item" id="goCustomLogout"><a class="nav-link logoutBtn" href="#" onclick="document.getElementById('logout').submit();">
 						<i class="fa fa-reply" aria-hidden="true"></i> <span>로그아웃</span>
 					</a></li>
 			</sec:authorize>
 
 
 			<!-- Nav Item - Utilities Collapse Menu -->
-			<li class="nav-item"><a class="nav-link" href="/register">
+			<li class="nav-item" id="goRegister" ><a class="nav-link" href="/register">
 					<i class="fa fa-users" aria-hidden="true"></i> <span>회원가입</span>
 				</a></li>
 
 			<hr class="sidebar-divider d-none d-md-block">
 
 			<!-- Nav Item - Pages Collapse Menu -->
-			<li class="nav-item"><a class="nav-link" href="/board/list">
+			<li class="nav-item" id="goList"><a class="nav-link" href="/board/list">
 					<i class="fa fa-comments" aria-hidden="true"></i> <span>커뮤니티</span>
 				</a></li>
 
 			<!-- Nav Item - Charts -->
-			<li class="nav-item"><a class="nav-link" href="/board2/list">
+			<li class="nav-item" id="goList2"><a class="nav-link" href="/notice/list">
 					<i class="fa fa-bullhorn" aria-hidden="true"></i></i> <span>공지사항</span>
 				</a></li>
 
 			<!-- Nav Item - Tables -->
-			<li class="nav-item"><a class="nav-link" href="/board3/list">
+			<li class="nav-item" id="goList3"><a class="nav-link" href="/Q&A/list">
 					<i class="fa fa-question-circle" aria-hidden="true"></i> <span>Q&A</span>
 				</a></li>
 
@@ -104,3 +104,33 @@
 		<div class="container-fluid">
 			<br>
 			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+$(document).ready( function() {
+	
+	var url = $(location).attr('href');
+	
+	if (url.includes("customLogin")){
+		$(".nav-item").removeClass("active");
+		$("#goCustomLogin").addClass("active");
+	}
+	else if (url.includes("register")){
+		$(".nav-item").removeClass("active");
+		$("#goRegister").addClass("active");
+	}
+	else if (url.includes("board")){
+		$(".nav-item").removeClass("active");
+		$("#goList").addClass("active");
+	}
+	else if (url.includes("notice")){
+		console.log(url.includes("Q&A"));
+		$(".nav-item").removeClass("active");
+		$("#goList2").addClass("active");
+	}
+	else if (url.includes("Q&A")){
+		$(".nav-item").removeClass("active");
+		$("#goList3").addClass("active");
+	}
+});
+//url에 따라 li에 active를 부여
+</script>

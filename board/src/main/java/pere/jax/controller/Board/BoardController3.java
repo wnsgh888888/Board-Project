@@ -18,7 +18,7 @@ import pere.jax.service.Board.BoardService3;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("/board3/*")
+@RequestMapping("/Q&A/*")
 public class BoardController3 {
 	
 	private BoardService3 service;	
@@ -41,7 +41,7 @@ public class BoardController3 {
 		service.register(board);
 		rttr.addFlashAttribute("result", board.getBno());
 		
-		return "redirect:/board3/list";
+		return "redirect:/Q&A/list";
 	}
 
 	
@@ -57,7 +57,7 @@ public class BoardController3 {
 		if (service.modify(board))
 			rttr.addFlashAttribute("result", "success");
 		
-		return "redirect:/board3/list" + cri.getListLink();
+		return "redirect:/Q&A/list" + cri.getListLink();
 	}
 
 	@PreAuthorize("principal.username == #writer")
@@ -67,6 +67,6 @@ public class BoardController3 {
 		if (service.remove(bno))
 			rttr.addFlashAttribute("result", "success");
 		
-		return "redirect:/board3/list" + cri.getListLink();
+		return "redirect:/Q&A/list" + cri.getListLink();
 	}
 }
