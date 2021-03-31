@@ -19,23 +19,23 @@
 		<form role='form' action='/board/register' method='post'>
 			<div class='form-group'>
 				<label class="font-weight-bold">제목</label>
-				<input class='form-control' name='title'>
+				<input class='form-control' id="title" name='title'>
 			</div>
 
 			<div class='form-group'>
 				<label class="font-weight-bold">내용</label>
-				<textarea class='form-control' rows='9' name='content'></textarea>
+				<textarea class='form-control' id="content" rows='9' name='content'></textarea>
 			</div>
 
 			<div class='form-group'>
 				<label class="font-weight-bold">작성자</label>
-				<input class='form-control' name='writer' value='<sec:authentication property="principal.username"/>' readonly='readonly'>
+				<input class='form-control' id="writer" name='writer' value='<sec:authentication property="principal.username"/>' readonly='readonly'>
 			</div>
 
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
-			<button type='submit' class='btn btn-primary'>확인</button>
-			<button type='button' id='listBtn' class="btn btn-primary">목록</button>
+			<button type='button' class='btn btn-primary regBtn'>확인</button>
+			<button type='button' class="btn btn-primary listBtn">목록</button>
 		</form>
 	</div>
 	<!-- 테이블 바디-->
@@ -44,11 +44,34 @@
 
 <script>
 	$(document).ready(function() {
-		$("#listBtn").on("click", function() {
+		
+		$(".regBtn").on("click",function(e){
+			
+			var title = $("#title").val();
+			var content = $("#content").val();
+			var writer = $("#writer").val();
+			var frmArr = [title,content,writer];
+			
+			for(var i=0; i<frmArr.length; i++){
+				
+				frmArr[i] = $.trim(frmArr[i]);
+				
+				if(!frmArr[i]){
+					alert("공백이나 단일숫자는 허용하지 않습니다.");
+					return false;
+				}
+			}
+			console.log("hi");
+			$("form").submit();
+		});
+		//javascript의 조건문안에서 ** null,undefined,’‘,0 은 false로 변환
+		
+		
+		$(".listBtn").on("click", function() {
 			self.location = "/board/list";
 		});
+		//리스트 버튼 클릭 시 criteria만을 전송
 	});
-	//리스트 버튼 클릭 시 criteria만을 전송
 </script>
 
 
